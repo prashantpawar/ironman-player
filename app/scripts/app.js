@@ -13,7 +13,8 @@ angular
     'ngCookies',
     'ngResource',
     'ngRoute',
-    'ngTouch'
+    'ngTouch',
+	'firebase'
   ])
   .config(function ($routeProvider) {
     $routeProvider
