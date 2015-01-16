@@ -8,24 +8,29 @@
  * Controller of the ironmanPlayerApp
  */
 angular.module('ironmanPlayerApp')
-  .controller('MainCtrl', ['$scope', '$firebase', function ($scope, $firebase) {
-	  var ref, jw, sync;
+.controller('MainCtrl', ['$scope', '$firebase', function ($scope, $firebase) {
+	var ref, jw, sync, playerState, playerDefaults, syncObject;
 
-	  ref = new Firebase("https://ironman-player.firebaseio.com/");
+	playerDefaults = {
+		id: 'playerrprEMyXDuyEU'
+	};
 
-	  jw = jwplayer('playerrprEMyXDuyEU').setup({
-		  file: 'https://www.youtube.com/watch?v=UG9MgcmIOqE',
-		  image: '//www.longtailvideo.com/content/images/jw-player/lWMJeVvV-876.jpg',
-		  width: '100%',
-		  aspectratio: '16:9'
-	  });
+	ref = new Firebase('https://ironman-player.firebaseio.com/player');
+	sync = $firebase(ref);
+    playerState = angular.extend({}, sync.$asObject(), playerDefaults);
 
-	  sync = $firebase(ref);
+	jw = jwplayer(playerState.id).setup({
+		file: 'https://www.youtube.com/watch?v=UG9MgcmIOqE',
+		width: '100%',
+		aspectratio: '16:9'
+	});
 
-	  $scope.pause = function() {
-		  if(jw.getState() === jw.PLAYING)
-			  jw.pause();
-		  else
-			  jw.play();
-	  };
-  }]);
+	$scope.pause = function() {
+		if(jw.getState() === jw.PLAYING) {
+			jw.pause();
+		} else {
+			jw.play();
+		}
+	};
+
+}]);
